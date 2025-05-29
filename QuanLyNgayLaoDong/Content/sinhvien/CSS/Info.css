@@ -1,0 +1,170 @@
+﻿/* Modal Background */
+.edit-form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Form Container */
+.edit-form {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 900px; /* Tăng max-width để phù hợp với bố cục ngang */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Title */
+.form-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4A3AFF;
+}
+
+/* Form Group Container */
+#editForm {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các form-group xuống dòng nếu không đủ chỗ */
+    justify-content: space-between;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center; /* Căn giữa label và input theo chiều dọc */
+    width: 48%; /* Mỗi form-group chiếm khoảng 48% chiều rộng để tạo 2 cột */
+}
+
+    /* Label */
+    .form-group label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-right: 10px; /* Khoảng cách giữa label và input */
+        color: #333;
+        min-width: 100px; /* Đảm bảo label có chiều rộng tối thiểu để đồng đều */
+    }
+
+/* Input */
+.form-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    flex: 1; /* Input chiếm toàn bộ không gian còn lại trong form-group */
+    box-sizing: border-box;
+}
+
+    /* Focus state */
+    .form-input:focus {
+        border-color: #4A3AFF;
+        box-shadow: 0 0 3px rgba(74, 58, 255, 0.5);
+    }
+
+/* Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end; /* Đưa nút về phía bên phải */
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    margin-left: 10px; /* Khoảng cách giữa các nút */
+}
+
+/* Save Button */
+.btn-save {
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+    /* Save Button Hover */
+    .btn-save:hover {
+        background-color: #388E3C;
+    }
+
+/* Cancel Button */
+.btn-cancel {
+    background-color: #F44336;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+    /* Cancel Button Hover */
+    .btn-cancel:hover {
+        background-color: #D32F2F;
+    }
+/* Tùy chỉnh nền modal */
+#editFormModal .modal-content {
+    background-color: #f8f9fa !important; /* Màu nền nhạt hơn */
+    border-radius: 10px !important; /* Bo góc */
+    width: 800px !important;
+    margin: auto !important;
+    justify-content: center !important; /* Căn giữa theo chiều ngang */
+    align-items: center !important; /* Căn giữa theo chiều dọc */
+}
+
+/* Thay đổi màu header modal */
+#editFormModal .modal-header {
+    background-color: #5b92b4 !important;
+    color: white !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Thay đổi màu chữ tiêu đề modal */
+#editFormModal .modal-title {
+    font-size: 20px !important;
+    font-weight: bold !important;
+}
+
+/* Tùy chỉnh nút đóng modal */
+#editFormModal .btn-close {
+    filter: invert(1); /* Đổi màu icon thành trắng */
+}
+
+/* Chỉnh sửa form input */
+#editFormModal .form-control {
+    border-radius: 5px !important;
+    border: 1px solid #007bff !important;
+}
+
+/* Tùy chỉnh nút lưu */
+#editFormModal .btn-primary {
+    background-color: #007bff !important;
+    border: none !important;
+}
+
+/* Tùy chỉnh nút hủy */
+#editFormModal .btn-secondary {
+    background-color: #6c757d !important;
+    border: none !important;
+}
+info-container {
+    display: flex;
+    justify-content: space-between; /* Cách đều 2 bên */
+    gap: 20px; /* Khoảng cách giữa 2 cột */
+}
+
+.info {
+    width: 48%; /* Mỗi cột chiếm gần 50% */
+}

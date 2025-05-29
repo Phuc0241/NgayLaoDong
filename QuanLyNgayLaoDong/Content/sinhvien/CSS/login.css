@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('../image/Nen.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+}
+
+.login-box {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(196, 221, 255, 0.2);
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.text_dangnhap h2 {
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: #003cff;
+    margin-top: 0px;
+    margin-bottom: 22px;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box:hover {
+    border-color: #003cff;
+}
+
+.input-box input {
+    width: calc(100% - 40px);
+    padding: 10px;
+    padding-left: 31px;
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-box i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+}
+
+.input-box #togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+    cursor: pointer;
+}
+
+.input-box #togglePassword:hover {
+    color: #003cff;
+}
+
+.forgot-password {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    color: #0044cc;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    background-color: #0044cc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.login-btn:hover {
+    background-color: #003399;
+}
+
+:root {
+    --btn-gradient: linear-gradient(to right top, #fc6c8f, #ffb86c);
+}
+
+.login-btn:hover::before {
+    left: auto;
+    right: 0;
+    width: 100%;
+}
+
+.login-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background-color: #fff;
+    opacity: 0.1;
+    z-index: -1;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+/* Con mắt */
+i#togglePassword {
+    margin-left: 293px;
+}

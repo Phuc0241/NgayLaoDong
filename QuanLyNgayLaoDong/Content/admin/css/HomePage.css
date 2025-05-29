@@ -1,0 +1,32 @@
+﻿.icon-shape {
+    background-color: #344767;
+    border-radius:50%;
+    height:40px;
+    width:40px;
+    padding-top:12px;
+    text-align:center;
+    justify-content:center;
+    display:flex;
+    float:left;
+}
+.text-white-custom{
+    color:white;
+}
+.grayColor {
+    color: #8392ab !important;
+}
+.link{
+    text-decoration:none;
+    color:black;
+}
+.slide {
+    overflow: hidden;
+    border-radius: 20px; /* Điều chỉnh giá trị bo góc */
+    background-color:transparent !important;
+}
+.img{
+    height:100%;
+    width:100%;
+    object-fit:cover;
+    border-radius:20px;
+}

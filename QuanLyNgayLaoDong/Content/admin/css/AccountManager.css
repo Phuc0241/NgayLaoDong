@@ -1,0 +1,26 @@
+﻿.button {
+    padding: 8px 20px 8px 20px;
+    border-radius: 20px;
+    background-color: #7085a2;
+    color:white;
+    
+}
+.activeStatus {
+    background-color: #87c8a9;
+    padding: 4px 10px 4px 10px;
+    border-radius: 10px;
+    
+}
+.buttonAdd {
+    padding: 8px 20px 8px 20px;
+    border-radius: 10px;
+    background-color: #7085a2;
+    color: white;
+    border: none;
+}
+.avt{
+    height:50px;
+    width:50px;
+    border-radius:50%;
+    margin-right:20px;
+}

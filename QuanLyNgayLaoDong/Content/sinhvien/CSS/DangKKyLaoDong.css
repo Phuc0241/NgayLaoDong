@@ -1,0 +1,30 @@
+﻿.button {
+    padding: 8px 20px 8px 20px;
+    border-radius: 20px;
+    background-color: #7085a2;
+    color: white;
+}
+.date{
+    margin-bottom:20px;
+    padding-left:20px;
+    width:200px;
+    height:40px;
+    border-radius:20px;
+    border:none;
+}
+.BtnSearch {
+    padding: 8px 20px 8px 20px;
+    border-radius: 20px;
+    background-color: #7085a2;
+    color: white;
+    height:40px;
+    margin-left:20px;
+}
+#status {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+}

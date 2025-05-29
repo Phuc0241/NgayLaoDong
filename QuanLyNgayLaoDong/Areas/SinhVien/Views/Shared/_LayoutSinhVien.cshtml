@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/trangchu/CSS/SinhVien.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel=" stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Trang Thông Tin Sinh Viên</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="TrangChuSinhVien.html">
+                <img src="~/Content/trangchu/images/imageLayout/LogoTruong.png" alt="Logo" class="logo">
+            </a>
+            <div class="search-container">
+                <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                <button class="search-button"><i class="fa fa-search"></i></button>
+            </div>
+            <div class="nav-content-text">Sinh Viên</div>
+            <div class="user-menu" id="userMenu">
+                <img src="~/Content/trangchu/images/imageLayout/Avarta.png" alt="User Avatar" class="user-avatar">
+                <span class="user-name">Huỳnh Tiến Hiểu</span>
+                <i class="fa fa-caret-down"></i>
+                <ul class="dropdown-menu" id="dropdownMenu">
+                    <li><a class="a-color" href="TrangThongTinSinhVien.html">Thông tin cá nhân</a></li>
+                    <li><a class="a-color" href="#">Đổi mật khẩu</a></li>
+                    <li><a class="a-color" href="login.html">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <div class="nav-content-text">
+            <span class="nav-content-text"> Thông Tin Sinh Viên</span>
+        </div>
+        <div class="row">
+            <!-- Menu Bên Trái -->
+            <div class="col-md-3">
+                <!-- Nút bấm để mở menu -->
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i> Menu
+                </button>
+
+                <!-- Danh sách menu -->
+                <div class="box-container-menu" id="menu">
+                    <a href="TrangNguoiQuanLy.html"><i class="fa fa-home"></i> Trang chủ</a>
+                    <a href="TrangDKLD.html" class="icon-link">
+                        <i class="fa-regular fa-calendar-plus"></i> Đăng Ký Lao
+                        Động
+                    </a>
+                    <a href="Thongke.html"><i class="fa fa-bar-chart"></i> Thống kê</a>
+                    <a href="LichLaoDong.html" class="icon-link"><i class="fa fa-calendar"></i> Lịch Lao Động</a>
+                    <a href="XacNhanHoanThanh.html"><i class="fa fa-check-circle"></i> Điểm danh lao động</a>
+                    <a href="ThongBao.html"><i class="fas fa-bell"></i> Thông báo</a>
+                </div>
+            </div>
+
+            <script>
+                function toggleMenu() {
+                    var menu = document.getElementById("menu");
+                    var button = document.querySelector(".menu-toggle i");
+
+                    if (menu.style.maxHeight === "0px" || menu.style.maxHeight === "") {
+                        menu.style.maxHeight = "500px"; // Mở menu
+                        button.classList.remove("fa-bars");
+                        button.classList.add("fa-times"); // Đổi icon thành "X"
+                    } else {
+                        menu.style.maxHeight = "0px"; // Đóng menu
+                        button.classList.remove("fa-times");
+                        button.classList.add("fa-bars"); // Đổi lại icon "Menu"
+                    }
+                }
+            </script>
+
+            <!-- Thông Tin Tài Khoản -->
+            <div class="col-md-9">
+                <div class="info-card">
+                    <h2 class="title">Thông tin tài khoản</h2>
+                    <div class="profile-img-container">
+                        <img src="~/Content/trangchu/images/imageLayout/Avarta.png" alt="Ảnh đại diện" class="profile-img">
+                        <div class="overlay">Thay đổi ảnh</div>
+                    </div>
+
+                    <div class="info">
+                        <p><strong>MSSV:</strong> 2025001</p>
+                        <p><strong>Họ và tên:</strong> Huỳnh Tiến Hiếu</p>
+                        <p><strong>Email:</strong> Huynhtienhieu@gmail.com</p>
+                    </div>
+                    <div class="info">
+                        <p><strong>Ngày sinh:</strong> 01/01/2000</p>
+                        <p><strong>Giới tính:</strong> Nam</p>
+                        <p><strong>Địa chỉ:</strong> Cao Lãnh, Đồng Tháp</p>
+                        <p><strong>Số điện thoại:</strong> 0123456789</p>
+                        <p><strong>Vai trò:</strong> Quản lý</p>
+                        <div>
+                            @RenderBody()
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Chỉnh sửa thông tin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('userMenu').addEventListener('click', function (event) {
+            event.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        });
+        document.addEventListener('click', function (event) {
+            if (!document.getElementById('userMenu').contains(event.target)) {
+                document.getElementById('dropdownMenu').classList.remove('show');
+            }
+        });
+    </script>
+</body>
+
+</html>

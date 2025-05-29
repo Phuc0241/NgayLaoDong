@@ -1,0 +1,249 @@
+﻿@model List<QuanLyNgayLaoDong.Models.TaiKhoan>
+
+
+
+@{
+    ViewBag.Title = "TrangTaiKhoan";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var taiKhoanDetail = TempData["TaiKhoanDetail"] as QuanLyNgayLaoDong.Models.TaiKhoan;
+    var taiKhoanEdit = TempData["TaiKhoanEdit"] as QuanLyNgayLaoDong.Models.TaiKhoan;
+    var resetSuccess = TempData["ResetSuccess"] as string; // Lấy thông báo reset thành công
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/Css/TaiKhoan.css" />
+
+<h2 style="text-align: center; font-size: 35px; font-weight: 750; color: #1100ff;">Danh Sách Tài Khoản</h2>
+
+<!-- Hiển thị thông báo thành công -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" style="text-align: center; margin-bottom: 10px;">
+        @TempData["Message"]
+    </div>
+}
+
+<!-- Hiển thị thông báo lỗi -->
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" style="text-align: center; margin-bottom: 10px;">
+        @TempData["Error"]
+    </div>
+}
+
+<!-- Hiển thị thông báo reset thành công -->
+@if (!string.IsNullOrEmpty(resetSuccess))
+{
+    <div class="alert alert-success" style="text-align: center; margin-bottom: 10px;">
+        @resetSuccess
+    </div>
+}
+
+<!-- Backdrop for overlay -->
+<div class="backdrop" id="backdrop" style="display: none;"></div>
+
+<!-- Form Thêm Tài Khoản -->
+<div class="add-form-container overlay-container" id="add-form-container" style="display: none;">
+    <h3 class="form-header">Thêm Tài Khoản Mới </h3>
+    <div class="form-content">
+        <form action="@Url.Action("AddTaiKhoan", "AdminHome")" method="post" class="add-form">
+            <input type="text" name="username" placeholder="Tên tài khoản" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <select name="role_id" required>
+                <option value="">--Chọn vai trò--</option>
+                <option value="1">Sinh viên</option>
+                <option value="2">Lớp trưởng</option>
+                <option value="3">Quản lý</option>
+                <option value="4">Admin</option>
+            </select>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Thêm</button>
+                <button type="button" class="btn-close-form" onclick="toggleSection('add-form-container')">Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tìm kiếm và lọc -->
+<div class="filter-bar">
+    <div class="action-bar">
+        <button class="btn-add" onclick="toggleSection('add-form-container')">Thêm Tài Khoản</button>
+    </div>
+    <input type="text" id="searchInput" placeholder="Tìm kiếm tài khoản..." />
+    <select id="roleFilter">
+        <option value="">Tất cả</option>
+        <option value="Sinh viên">Sinh viên</option>
+        <option value="Lớp trưởng">Lớp trưởng</option>
+        <option value="Quản lý">Quản lý</option>
+        <option value="Admin">Admin</option>
+    </select>
+    <button class="btn-add" onclick="exportToExcel()">
+        Xuất Excel
+    </button>
+</div>
+
+<!-- Bảng danh sách -->
+<div class="account-container">
+    <table id="accountTable">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên Tài Khoản</th>
+                <th>Mật khẩu</th>
+                <th>Email</th>
+                <th>Loại Tài Khoản</th>
+                <th style="text-align:center">Tác Vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int stt = 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.username</td>
+                        <td>*******</td>
+                        <td>@item.email</td>
+                        <td>
+                            @{
+                                var rawRole = item.VaiTro?.vaitro1?.ToLower();
+                                var displayRole = "Chưa có";
+
+                                switch (rawRole)
+                                {
+                                    case "sinhvien":
+                                        displayRole = "Sinh viên";
+                                        break;
+                                    case "loptruong":
+                                        displayRole = "Lớp trưởng";
+                                        break;
+                                    case "quanly":
+                                        displayRole = "Quản lý";
+                                        break;
+                                    case "admin":
+                                        displayRole = "Admin";
+                                        break;
+                                }
+                            }
+                            @displayRole
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" onclick="toggleEditForm(@item.taikhoan_id, '@item.username', '@item.email', '@item.VaiTro.vaitro1')">Sửa</a> |
+                            <a href="javascript:void(0)" onclick="toggleDeleteForm(@item.taikhoan_id)">Xóa</a> |
+                            <a href="@Url.Action("Details", "AdminHome", new { id = item.taikhoan_id })">Chi Tiết</a> |
+                            <a href="javascript:void(0)" onclick="toggleResetForm(@item.taikhoan_id)">Reset Mật Khẩu</a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Chi tiết tài khoản -->
+@if (taiKhoanDetail != null)
+{
+    <div class="detail-container overlay-container" id="detail-container">
+        <h3 class="detail-header">Chi Tiết Tài Khoản</h3>
+        <div class="detail-content">
+            <dl class="detail-list">
+                <dt>ID</dt>
+                <dd>@taiKhoanDetail.taikhoan_id</dd>
+                <dt>Tên Tài Khoản</dt>
+                <dd>@taiKhoanDetail.username</dd>
+                <dt>Mật khẩu</dt>
+                <dd>@taiKhoanDetail.password</dd>
+                <dt>Email</dt>
+                <dd>@taiKhoanDetail.email</dd>
+                <dt>Vai Trò</dt>
+                <dd>
+                    @{
+                        var rawDetailRole = taiKhoanDetail.VaiTro?.vaitro1?.ToLower();
+                        var displayDetailRole = "Chưa có";
+
+                        switch (rawDetailRole)
+                        {
+                            case "sinhvien":
+                                displayDetailRole = "Sinh viên";
+                                break;
+                            case "loptruong":
+                                displayDetailRole = "Lớp trưởng";
+                                break;
+                            case "quanly":
+                                displayDetailRole = "Quản lý";
+                                break;
+                            case "admin":
+                                displayDetailRole = "Admin";
+                                break;
+                        }
+                    }
+                    @displayDetailRole
+                </dd>
+            </dl>
+            <button style="margin-left: 42%;" class="btn-close-detail" onclick="toggleSection('detail-container')">Đóng</button>
+        </div>
+    </div>
+}
+
+<!-- Form Sửa Tài Khoản -->
+<div class="edit-form-container overlay-container" id="edit-form-container" style="display: none;">
+    <h3 class="form-header">Sửa Tài Khoản</h3>
+    <div class="form-content">
+        <form action="@Url.Action("EditTaiKhoan", "AdminHome")" method="post" class="edit-form">
+            <input type="hidden" name="taikhoan_id" id="edit-taikhoan-id" />
+            <input type="text" name="username" id="edit-username" placeholder="Tên tài khoản" required />
+            <input type="password" name="password" id="edit-password" placeholder="Mật khẩu mới (để trống nếu không đổi)" />
+            <input type="email" name="email" id="edit-email" placeholder="Email" required />
+            <select name="role_id" id="edit-role-id" required>
+                <option value="">--Chọn vai trò--</option>
+                <option value="1">Admin</option>
+                <option value="2">Quản lý</option>
+                <option value="3">Sinh viên</option>
+                <option value="4">Lớp trưởng</option>
+            </select>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Lưu</button>
+                <button type="button" class="btn-close-form" onclick="toggleSection('edit-form-container')">Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Form Xóa Tài Khoản -->
+<div class="delete-form-container overlay-container" id="delete-form-container" style="display: none;">
+    <h3 class="form-header">Xác Nhận Xóa Tài Khoản</h3>
+    <div class="form-content">
+        <p style="text-align:center">Bạn có chắc chắn muốn xóa tài khoản này?</p>
+        <form action="@Url.Action("Delete", "AdminHome")" method="post" class="delete-form">
+            <input type="hidden" name="id" id="delete-taikhoan-id" />
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn-close-form" onclick="toggleSection('delete-form-container')">Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Form Reset Mật Khẩu -->
+<div class="reset-form-container overlay-container" id="reset-form-container" style="display: none;">
+    <h3 class="form-header">Xác Nhận Reset Mật Khẩu</h3>
+    <div class="form-content">
+        <p style="text-align:center">Bạn có chắc chắn muốn đặt lại mật khẩu về 'abc@123' cho tài khoản này?</p>
+        <form action="@Url.Action("ResetPassword", "AdminHome")" method="post" class="reset-form">
+            <input type="hidden" name="id" id="reset-taikhoan-id" />
+            <div class="form-actions">
+                <button type="submit" class="btn btn-warning">Đặt Lại</button>
+                <button type="button" class="btn-close-form" onclick="toggleSection('reset-form-container')">Hủy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Phân trang -->
+<div class="pagination" id="pagination"></div>
+
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="~/Areas/Admin/Javascript/TaiKhoan.js"></script>

@@ -1,0 +1,270 @@
+﻿/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+a.a-color {
+    text-decoration: none;
+}
+
+a.text-primary {
+    text-decoration: none;
+}
+
+h6 {
+    color: blue;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.img-Laodong {
+    height: 83px;
+    width: 96px;
+    display: block;
+    margin: auto;
+}
+
+body {
+    background: rgb(237 235 235);
+}
+
+li.list-group-item {
+    border: none;
+}
+
+a.a-color {
+    text-decoration: none;
+}
+
+a.btn.btn-outline-primary.btn-sm {
+    width: 98px;
+    margin-right: 67px;
+}
+/* ======== THANH ĐIỀU HƯỚNG (NAV) ======== */
+h4.text-danger.fw-bold {
+    text-align: center;
+}
+
+nav {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 50px;
+}
+
+/* Ô tìm kiếm */
+.search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background: #f9f9f9;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px;
+}
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Tiêu đề trang */
+.nav-content-text {
+    font-size: 31px;
+    font-weight: bold;
+    color: #6156ff;
+}
+
+/* ======== MENU NGƯỜI DÙNG ======== */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 160px;
+    display: none;
+    padding: 5px 0;
+    z-index: 100;
+    left: 30px;
+    top: 38px;
+}
+
+    .dropdown-menu li {
+        padding: 10px;
+        text-align: left;
+        font-size: 14px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .dropdown-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #f0f0f0;
+        }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+/* =================== PHẦN NỘI DUNG CHÍNH =================== */
+.col-md-4 {
+    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.1);
+    transition: transformlinear 0.1s;
+    will-change: transform;
+}
+
+    .col-md-4:hover {
+        transform: translateY(-5px);
+    }
+
+
+.card.shadow-sm.text-center.p-3.bg-info.text-white.mb-4 {
+    background-color: white;
+}
+
+.text-decoration-none {
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1135px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.contains-right {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 423px;
+    border: 1px solid #ffff;
+}
+
+.main-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.info-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .info-card p {
+        margin: 5px 0;
+    }
+
+/* =================== CHÂN TRANG (FOOTER) =================== */
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #f1f1f1;
+    margin-top: 20px;
+}
+
+/* =================== RESPONSIVE =================== */
+
+@media (max-width: 768px) {
+    .nav-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .search-container {
+        display: none;
+    }
+
+    .nav-content-text {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .user-menu {
+        margin-top: 10px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .info-card {
+        padding: 10px;
+    }
+
+    footer {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-content {
+        padding: 10px;
+    }
+
+    .main-title {
+        font-size: 18px;
+    }
+
+    .user-name {
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 12px;
+    }
+}
