@@ -11,7 +11,7 @@
     <script src="~/Areas/Admin/Javascript/AdminshareJavaScript.js"></script>
     <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/layout.css")">
     <title>@ViewBag.Title</title>
-   
+
 
 </head>
 
@@ -19,7 +19,7 @@
     <!-- Navbar -->
     <nav>
         <div class="nav-content">
-            <a href="@Url.Action("Index", "TrangChu", new {area = "SinhVien"})">
+            <a href="@Url.Action("Index", "TrangChuLopTruong", new {area = "LopTruong"})">
                 <img src="~/Content/trangchu/images/imageLayout/LogoTruong.png" alt="Logo" class="logo">
             </a>
             <div class="nav-content-text">Sinh Viên</div>
@@ -27,7 +27,7 @@
                 @{ Html.RenderAction("ThongTinDangNhap", "InfoLayout", new { area = "SinhVien" }); }
                 <i class="fa fa-caret-down"></i>
                 <ul class="dropdown-menu" id="dropdownMenu">
-                    <li><a class="a-color" href="@Url.Action("TrangThongTinSinhVien", "TrangChu")">Thông tin cá nhân</a></li>
+                    <li><a class="a-color" href="@Url.Action("TrangThongTinLopTruong", "TrangChuLopTruong")">Thông tin cá nhân</a></li>
                     <li><a class="a-color" href="javascript:void(0);" onclick="openModal()">Đăng xuất</a></li>
                 </ul>
             </div>
@@ -42,13 +42,12 @@
                     <i class="fas fa-bars"></i> Menu
                 </button>
                 <div class="box-container-menu" id="menu">
-                    <a href="@Url.Action("Index", "TrangChu", new {area = "SinhVien"})"><i class="fa fa-home"></i> Trang chủ</a>
-                    <a href="@Url.Action("PhieuDangKy", "TrangChu")"><i class="fa-regular fa-calendar-plus"></i> Đăng Ký Lao Động</a>
-                    <a href="@Url.Action("ThongKe", "TrangChu")"><i class="fa fa-bar-chart"></i> Thống kê</a>
-                    <a href="@Url.Action("LichLaoDong", "TrangChu")"><i class="fa fa-calendar"></i> Lịch Lao Động</a>
-                    <a href="@Url.Action("DiemDanh", "TrangChu")"><i class="fa fa-check-circle"></i> Điểm danh lao động</a>
-                    <a href="@Url.Action("ThongBao", "TrangChu")"><i class="fas fa-bell"></i> Thông báo</a>
-                    <a href="@Url.Action("NhapMa", "TrangChu")"><i class="fas fa-bell"></i> Nhập mã</a>
+                    <a href="@Url.Action("Index", "TrangChuLopTruong", new {area = "LopTruong"})"><i class="fa fa-home"></i> Trang chủ</a>
+                    <a href="@Url.Action("PhieuDangKy", "TrangChuLopTruong")"><i class="fa-regular fa-calendar-plus"></i> Đăng Ký Lao Động</a>
+                    <a href="@Url.Action("ThongKe", "TrangChuLopTruong")"><i class="fa fa-bar-chart"></i> Thống kê</a>
+                    <a href="@Url.Action("LichLaoDong", "TrangChuLopTruong")"><i class="fa fa-calendar"></i> Lịch Lao Động</a>
+                    <a href="@Url.Action("DiemDanh", "TrangChuLopTruong")"><i class="fa fa-check-circle"></i> Điểm danh lao động</a>
+                    <a href="@Url.Action("ThongBao", "TrangChuLopTruong")"><i class="fas fa-bell"></i> Thông báo</a>
                 </div>
             </div>
 

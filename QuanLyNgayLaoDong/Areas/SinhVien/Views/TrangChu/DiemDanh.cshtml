@@ -1,0 +1,84 @@
+﻿@model List<QuanLyNgayLaoDong.Areas.SinhVien.Modelview.PhieuDangKyViewModel>
+
+@{
+    ViewBag.Title = "Điểm danh lao động";
+    Layout = "~/Areas/SinhVien/Views/Shared/_LayoutSinhVien.cshtml";
+    var today = DateTime.Today;
+    var status = TempData["DiemDanhStatus"]?.ToString();
+    var matchedId = TempData["DiemDanhId"]?.ToString();
+}
+
+<h2 class="text-center">Danh sách phiếu đăng ký lao động</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr class="text-center">
+            <th>STT</th>
+            <th>Thời gian đăng ký</th>
+            <th>Lao động theo lớp</th>
+            <th>Lao động cá nhân</th>
+            <th>Điểm danh</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @foreach (var item in Model)
+        {
+            var isToday = item.NgayLaoDong?.Date == today;
+            //var isToday = item.NgayLaoDong.HasValue && item.NgayLaoDong.Value.Date == today;
+
+            <tr class="text-center">
+                <td>@index</td>
+                <td>@item.ThoiGian</td>
+                <td>@(item.LaoDongTheoLop == true ? "Có" : "Không")</td>
+                <td>@(item.LaoDongCaNhan == true ? "Có" : "Không")</td>
+                <td>
+                    @if (isToday)
+                    {
+                        <button class="btn btn-primary" onclick="toggleForm(@item.Id)">Điểm danh</button>
+
+                        <div id="form-@item.Id" class="mt-2 d-none">
+                            @using (Html.BeginForm("NhapMa", "TrangChu", FormMethod.Post, new { area = "SinhVien" }))
+                            {
+                                @Html.Hidden("id", item.Id)
+                                <input type="text" name="maDiemDanh" placeholder="Nhập mã điểm danh" class="form-control mb-2" />
+                                <button type="submit" class="btn btn-success">Xác nhận</button>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Chưa tới ngày lao động</span>
+                    }
+                </td>
+                @{ index++; }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function toggleForm(id) {
+            const form = document.getElementById('form-' + id);
+            if (form) {
+                form.classList.toggle('d-none');
+            }
+        }
+
+        window.onload = function () {
+            const status = '@status';
+            const matchedId = '@matchedId';
+
+            if (status === 'success') {
+                alert("✅ Điểm danh phiếu ID " + matchedId + " thành công!");
+            } else if (status === 'wrong') {
+                alert("❌ Sai mã điểm danh.");
+            } else if (status === 'empty') {
+                alert("⚠️ Vui lòng nhập mã điểm danh.");
+            }
+        }
+    </script>
+}

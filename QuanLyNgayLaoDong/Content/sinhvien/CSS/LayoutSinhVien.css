@@ -1,0 +1,20 @@
+﻿.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card h6 {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+}
+
+.Text-h6 {
+    color: black !important;
+    display: block !important;
+    font-size: 16px !important;
+    line-height: normal !important;
+}

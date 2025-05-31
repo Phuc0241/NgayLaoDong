@@ -1,0 +1,23 @@
+﻿@model QuanLyNgayLaoDong.Areas.SinhVien.Modelview.TaiKhoanViewModel
+@{
+    Layout = "~/Areas/SinhVien/Views/Shared/_LayoutSinhVien.cshtml";
+}
+
+
+<div class="card shadow-sm p-3 mb-4">
+    <h4 class="text-danger fw-bold">Thông Tin Sinh Viên</h4>
+    <div class="text-center">
+        <img src="@Url.Content(Model.AnhDaiDien)" class="img-fluid rounded-circle" width="120">
+        <div class="mt-2">
+            <a href="@Url.Action("TrangThongTinSinhVien", "TrangChu")" class="text-primary">Xem chi tiết</a>
+        </div>
+    </div>
+    <ul class="list-group list-group-flush mt-3">
+        <li class="list-group-item"><strong>MSQL:</strong> @Model.MSSV</li>
+        <li class="list-group-item"><strong>Họ và Tên:</strong> @Model.HoTen</li>
+        <li class="list-group-item"><strong>Giới tính:</strong> @Model.GioiTinh</li>
+        <li class="list-group-item"><strong>Email:</strong> @Model.Email</li>
+        <li class="list-group-item"><strong>Vai trò:</strong> @Model.VaiTro</li>
+    </ul>
+</div>
+

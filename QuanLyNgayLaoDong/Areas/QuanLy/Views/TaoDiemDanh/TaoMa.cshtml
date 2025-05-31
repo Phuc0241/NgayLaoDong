@@ -1,0 +1,45 @@
+﻿@*@{
+        ViewBag.Title = "Tạo mã điểm danh";
+        Layout = "~/Areas/QuanLy/Views/Shared/_LayoutQuanLyTaoDiemDanh.cshtml";
+    }
+
+    <h2>Mã điểm danh mới</h2>
+
+    @if (ViewBag.MaMoi != null)
+    {
+        <div class="alert alert-success">Mã điểm danh của bạn là: <strong>@ViewBag.MaMoi</strong></div>
+        <p>Mã có hiệu lực trong 30 phút.</p>
+        <a href="@Url.Action("DanhSach", "TaoDiemDanh", new { ma = ViewBag.MaMoi })">Xem danh sách đã điểm danh</a>
+    }*@
+<h2>Mã điểm danh mới</h2>
+@{
+    ViewBag.Title = "Tạo mã điểm danh";
+    Layout = "~/Areas/QuanLy/Views/Shared/_LayoutQuanLyTaoDiemDanh.cshtml";
+}
+
+@if (ViewBag.MaMoi != null)
+{
+    <div class="alert alert-success">Mã điểm danh của bạn là: <strong>@ViewBag.MaMoi</strong></div>
+    <p>Mã có hiệu lực trong 30 phút.</p>
+    <a href="@Url.Action("DanhSach", "TaoDiemDanh", new { ma = ViewBag.MaMoi })">Xem danh sách đã điểm danh</a>
+}
+
+<hr />
+<h3>Nhập mã điểm danh để xem danh sách</h3>
+@*@using (Html.BeginForm("DanhSach", "TaoDiemDanh", FormMethod.Get))*@
+@using (Html.BeginForm("DanhSach", "TaoDiemDanh", FormMethod.Get, new { area = "QuanLy" }))
+{
+    @*<div class="form-group">
+            <label for="ma">Mã điểm danh:</label>
+            <input type="text" name="ma" class="form-control" placeholder="Nhập mã điểm danh" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Xem danh sách</button>*@ 
+    {
+        <div class="form-group">
+            <label for="ma">Mã điểm danh:</label>
+            <input type="text" name="ma" class="form-control" placeholder="Nhập mã điểm danh" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Xem danh sách</button>
+    }
+
+}

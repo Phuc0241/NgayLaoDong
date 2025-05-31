@@ -1,0 +1,62 @@
+﻿@model QuanLyNgayLaoDong.Areas.LopTruong.ViewModel.ThongKeLaoDongLopTruongViewModel
+
+@{
+    ViewBag.Title = "Thống kê số ngày lao động";
+    Layout = "~/Areas/LopTruong/Views/Shared/_LayoutLopTruong.cshtml";
+}
+
+<h2 class="text-center">Thống kê số ngày lao động của sinh viên</h2>
+
+<canvas id="barChart" width="800" height="400"></canvas>
+
+<table class="table table-bordered table-striped mt-4">
+    <thead>
+        <tr class="text-center">
+            <th>MSSV</th>
+            <th>Họ tên</th>
+            <th>Tổng số ngày</th>
+            <th>Đã đủ 18 ngày?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center @(Model.Du18Ngay ? "table-success" : "table-warning")">
+            <td>@Model.MSSV</td>
+            <td>@Model.HoTen</td>
+            <td>@Model.TongSoNgay</td>
+            <td>@(Model.Du18Ngay ? "Đủ" : "Chưa đủ")</td>
+        </tr>
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('barChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [@Html.Raw(Json.Encode(Model.HoTen))],
+                datasets: [{
+                    label: 'Số ngày lao động',
+                    data: [@Model.TongSoNgay],
+                    backgroundColor: [@Html.Raw(Json.Encode(Model.Du18Ngay ? "rgba(75, 192, 192, 0.6)" : "rgba(255, 99, 132, 0.6)"))],
+                    borderColor: 'rgba(0, 0, 0, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 30,
+                        title: {
+                            display: true,
+                            text: 'Số ngày'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

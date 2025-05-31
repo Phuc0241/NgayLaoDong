@@ -21,38 +21,94 @@ namespace QuanLyNgayLaoDong.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
+            //    if (ModelState.IsValid)
+            //    {
+            //        var user = CheckLogin(model.Username, model.Password);
+            //        if (user != null)
+            //        {
+            //            // Tạo ticket Forms Authentication
+            //            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+            //                1, // version
+            //                user.Username, // username
+            //                DateTime.Now,
+            //                DateTime.Now.AddMinutes(30), // thời hạn
+            //                false,
+            //                user.Role, // role nằm ở UserData
+            //                FormsAuthentication.FormsCookiePath
+            //            );
+
+            //            // Mã hóa ticket và tạo cookie
+            //            string encTicket = FormsAuthentication.Encrypt(ticket);
+            //            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+            //            Response.Cookies.Add(cookie);
+
+            //            // Điều hướng theo vai trò
+            //            switch (user.Role)
+            //            {
+            //                case "Admin":
+            //                    return RedirectToAction("Index", "AdminHome", new { area = "Admin" });
+            //                case "QuanLy":
+            //                    return RedirectToAction("Index", "TrangChu", new { area = "QuanLy" });
+            //                case "SinhVien":
+            //                    return RedirectToAction("Index", "TrangChu", new { area = "SinhVien" });
+            //                case "LopTruong":
+            //                    return RedirectToAction("Index", "TrangChu", new { area = "LopTruong" });
+            //                default:
+            //                    return RedirectToAction("Login");
+            //            }
+            //        }
+
+            //        ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng.");
+            //    }
+
+            //    return View(model);
+            //}
             if (ModelState.IsValid)
             {
                 var user = CheckLogin(model.Username, model.Password);
                 if (user != null)
                 {
-                    // Tạo ticket Forms Authentication
+                    var account = _contextdb.TaiKhoans.FirstOrDefault(t => t.username == user.Username);
+                    if (account != null)
+                    {
+                        Session["Username"] = account.username;
+                        var sinhVien = _contextdb.SinhViens.FirstOrDefault(sv => sv.taikhoan == account.taikhoan_id);
+                        if (sinhVien != null)
+                        {
+                            Session["MSSV"] = sinhVien.MSSV;
+                        }
+                        else
+                        {
+                            // Optional: Log hoặc xử lý nếu không tìm thấy MSSV
+                        }
+                    }
+
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                        1, // version
-                        user.Username, // username
+                        1,
+                        user.Username,
                         DateTime.Now,
-                        DateTime.Now.AddMinutes(30), // thời hạn
+                        DateTime.Now.AddMinutes(30),
                         false,
-                        user.Role, // role nằm ở UserData
+                        user.Role,
                         FormsAuthentication.FormsCookiePath
                     );
 
-                    // Mã hóa ticket và tạo cookie
                     string encTicket = FormsAuthentication.Encrypt(ticket);
                     HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
                     Response.Cookies.Add(cookie);
 
-                    // Điều hướng theo vai trò
                     switch (user.Role)
                     {
                         case "Admin":
                             return RedirectToAction("Index", "AdminHome", new { area = "Admin" });
                         case "QuanLy":
-                            return RedirectToAction("Index", "TrangChu", new { area = "QuanLy" });
+                            //return RedirectToAction("Dotlaodong", "TrangChuQuanLy", new { area = "QuanLy" });
+                            //đổi tên controller để đăng nhập test tạo mã điểm danh
+                            return RedirectToAction("Index", "TaoDiemDanh", new { area = "QuanLy" });
                         case "SinhVien":
                             return RedirectToAction("Index", "TrangChu", new { area = "SinhVien" });
                         case "LopTruong":
-                            return RedirectToAction("Index", "TrangChu", new { area = "LopTruong" });
+                            return RedirectToAction("Index", "TrangChuLopTruong", new { area = "LopTruong" });
                         default:
                             return RedirectToAction("Login");
                     }

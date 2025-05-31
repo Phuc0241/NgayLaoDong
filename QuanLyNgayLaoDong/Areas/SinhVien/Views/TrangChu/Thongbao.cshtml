@@ -1,0 +1,38 @@
+﻿@model List<QuanLyNgayLaoDong.Areas.SinhVien.Modelview.DotLaoDongViewModel>
+
+@{
+    ViewBag.Title = "Thông Báo Đợt Lao Động";
+    Layout = "~/Areas/SinhVien/Views/Shared/_LayoutSinhVien.cshtml";
+}
+
+<h3 class="mb-4">Danh sách đợt lao động</h3>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Đợt Lao Động</th>
+            <th>Ngày lao Động</th>
+            <th>Khu vực</th>
+            <th>Buổi</th>
+            <th>Loại</th>
+            <th>Giá trị</th>
+            <th>Mô Tả</th>
+            <th>Thời Gian</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dot in Model)
+        {
+            <tr>
+                <td>@dot.DotLaoDong</td>
+                <td>@dot.NgayLaoDong.ToString("dd/MM/yyyy")</td>
+                <td>@dot.KhuVuc</td>
+                <td>@dot.Buoi</td>
+                <td>@dot.LoaiLaoDong</td>
+                <td>@dot.GiaTri ngày</td>
+                <td>@dot.MoTa</td>
+                <td>@dot.ThoiGian</td>
+            </tr>
+        }
+    </tbody>
+</table>

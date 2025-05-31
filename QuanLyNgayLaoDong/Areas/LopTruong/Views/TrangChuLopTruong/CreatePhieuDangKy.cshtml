@@ -1,0 +1,64 @@
+﻿@model QuanLyNgayLaoDong.Areas.LopTruong.ViewModel.PhieuDangKyLopTruongViewModel
+
+@{
+    ViewBag.Title = "Tạo Phiếu Đăng Ký";
+    Layout = "~/Areas/LopTruong/Views/Shared/_LayoutLopTruong.cshtml";
+}
+
+
+<div class="container mt-5" style="background-color: white; padding: 30px; border-radius: 10px;">
+    <h2 class="mb-4 text-center">Tạo Phiếu Đăng Ký</h2>
+
+    @using (Html.BeginForm("CreatePhieuDangKy", "TrangChuLopTruong", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.MSSV) //MSSV ẩn nhưng vẫn gửi về controller
+        @Html.HiddenFor(model => model.DotId) <!-- ✅ Cần thiết để gửi DotId khi submit -->
+
+
+        <div class="form-group">
+            <label>Mã số sinh viên</label>
+            <input class="form-control" value="@Model.MSSV" disabled />
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                @*<p><strong>Tên đợt lao động:</strong> @Model.TenDotLaoDong</p>*@
+                <p><strong>Đợt lao động:</strong> @Model.DotLaoDong</p>
+                <p><strong>Ngày lao động:</strong> @Model.NgayLaoDong</p>
+                <p><strong>Buổi:</strong> @Model.Buoi</p>
+                <p><strong>Khu vực:</strong> @Model.KhuVuc</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Loại lao động:</strong> @Model.LoaiLaoDong</p>
+                <p><strong>Giờ cụ thể:</strong> @Model.GioCuThe</p>
+                <p><strong>Mô tả:</strong> @Model.MoTa</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Hình thức lao động</label><br />
+
+            <div class="form-check">
+                @Html.RadioButtonFor(m => m.LoaiLaoDong, "Lop", new { @class = "form-check-input", id = "ldlop" })
+                <label class="form-check-label" for="ldlop">Lao động theo lớp</label>
+            </div>
+
+            <div class="form-check">
+                @Html.RadioButtonFor(m => m.LoaiLaoDong, "CaNhan", new { @class = "form-check-input", id = "ldcn" })
+                <label class="form-check-label" for="ldcn">Lao động cá nhân</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ThoiGian)
+            <input type="datetime-local" name="ThoiGian" class="form-control"
+                   value="@(Model.ThoiGian.HasValue ? Model.ThoiGian.Value.ToString("yyyy-MM-ddTHH:mm") : "")" />
+            @Html.ValidationMessageFor(model => model.ThoiGian, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tạo phiếu</button>
+        <a href="@Url.Action("PhieuDangKy", "TrangChuLopTruong", new { area = "LopTruong" })" class="btn btn-secondary ml-2">Quay lại</a>
+    }
+</div>
+

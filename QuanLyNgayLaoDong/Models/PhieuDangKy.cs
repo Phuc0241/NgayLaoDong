@@ -17,6 +17,7 @@ namespace QuanLyNgayLaoDong.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int id { get; set; }
+        public int? DotId { get; set; }
 
         public int? MSSV { get; set; }
 

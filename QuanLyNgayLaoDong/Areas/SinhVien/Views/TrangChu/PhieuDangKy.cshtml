@@ -1,0 +1,75 @@
+﻿@model List<QuanLyNgayLaoDong.Areas.SinhVien.Modelview.PhieuDangKyViewModel>
+
+@{
+    ViewBag.Title = "Danh sách Phiếu Đăng Ký";
+    Layout = "~/Areas/SinhVien/Views/Shared/_LayoutSinhVien.cshtml";
+    int stt = 1;
+}
+
+<div class="container mt-5" style="background-color: white; padding: 30px; border-radius: 10px;">
+    <h2 class="mb-4 text-center">Danh sách Phiếu Đăng Ký</h2>
+
+    <div class="mb-3 text-right">
+        <a href="@Url.Action("DangKyTheoThongBao", "TrangChu", new { area = "SinhVien" })" class="btn btn-success">
+            <i class="fas fa-plus"></i> Tạo Phiếu Đăng Ký Mới
+        </a>
+    </div>
+
+   
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Đợt Lao Động</th>
+                    <th>Ngày Lao Động</th>
+                    <th>Khu vực</th>
+                    <th>Buổi</th>
+                    <th>Loại</th>
+                    <th>Giá trị</th>
+                    <th>Mô tả</th>
+                    <th>Thời Gian Đăng Ký</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.DotLaoDong</td>
+                        <td>@(item.NgayLaoDong?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                        <td>@item.KhuVuc</td>
+                        <td>@item.Buoi</td>
+                        <td>@item.LoaiLaoDong</td>
+                        <td>@item.GiaTri</td> <!-- Trường mới cần thêm -->
+                        <td>@item.MoTa</td>
+                        <td>@(item.ThoiGian?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</td>
+                        <td>
+                            @*<a href="@Url.Action("EditPhieuDangKy", "TrangChu", new { id = item.Id, area = "SinhVien" })" class="btn btn-primary btn-sm mb-1">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>*@
+                            <a href="@Url.Action("DeletePhieuDangKy", "TrangChu", new { id = item.Id, area = "SinhVien" })"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc muốn xóa phiếu đăng ký này không?');">
+                                <i class="fas fa-trash-alt"></i> Xóa
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">Không có phiếu đăng ký nào.</div>
+    }
+
+
+    <a href="@Url.Action("Index", "TrangChu", new { area = "SinhVien" })" class="btn btn-secondary mt-3">
+        <i class="fas fa-arrow-left"></i> Quay lại
+    </a>
+</div>
+

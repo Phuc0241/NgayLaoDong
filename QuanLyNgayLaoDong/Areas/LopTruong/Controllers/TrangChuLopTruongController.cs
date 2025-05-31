@@ -10,13 +10,13 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
-namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
+namespace QuanLyNgayLaoDong.Areas.LopTruong.Controllers
 {
-    [Authorize(Roles = "SinhVien")]
-    public class TrangChuController : Controller
+    [Authorize(Roles = "LopTruong")]
+    public class TrangChuLopTruongController : Controller
     {
         private DB_QLNLD _contextdb = new DB_QLNLD();
-        // GET: SinhVien/TrangChu
+        // GET: LopTruong/TrangChu
         public ActionResult Index()
         {
             var username = User.Identity.Name;
@@ -27,7 +27,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                          join anh in _contextdb.Anhs on sv.anh_id equals anh.anh_id into anhJoin
                          from anhLeft in anhJoin.DefaultIfEmpty()
                          where tk.username == username
-                         select new TaiKhoanViewModel
+                         select new TaiKhoanLopTruongViewModel
                          {
                              MSSV = sv.MSSV,
                              HoTen = sv.hoten,
@@ -51,9 +51,8 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             }
 
             return View(model);
-            //return View();
         }
-        public ActionResult TrangThongTinSinhVien()
+       public ActionResult TrangThongTinLopTruong()
         {
             var username = User.Identity.Name;
 
@@ -70,7 +69,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                          join anh in _contextdb.Anhs on sv.anh_id equals anh.anh_id into anhJoin
                          from anhLeft in anhJoin.DefaultIfEmpty()
                          where tk.username == username
-                         select new TaiKhoanViewModel
+                         select new TaiKhoanLopTruongViewModel
                          {
                              MSSV = sv.MSSV,
                              HoTen = sv.hoten,
@@ -96,7 +95,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
 
             return View(model);
         }
-        public ActionResult ThongTinSinhVien()
+        public ActionResult ThongTinLopTruong()
         {
             // Giả sử bạn có DbContext
             var user = _contextdb.TaiKhoans.FirstOrDefault(t => t.username == "tên đăng nhập");
@@ -109,23 +108,21 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             return View(user);
         }
         //Không xóa được bị trùng lập, hoặc lớp trưởng bỏ tích chọn
-        [HttpGet]
         public ActionResult PhieuDangKy()
         {
             if (Session["MSSV"] == null)
                 return RedirectToAction("Login", "Login"); // Nếu chưa đăng nhập
 
             int mssv = Convert.ToInt32(Session["MSSV"]);
-
             var danhSachPhieu = _contextdb.PhieuDangKies
-            .Where(p => p.MSSV == mssv)
-            .ToList();
+                           .Where(p => p.MSSV == mssv)
+                           .ToList();
             var danhSachDot = _contextdb.TaoDotNgayLaoDongs.ToList();
             var result = danhSachPhieu.Select((p, index) =>
             {
                 var dot = danhSachDot.FirstOrDefault(d => d.ID == p.DotId); // ✅ sửa lại
 
-                return new PhieuDangKyViewModel
+                return new PhieuDangKyLopTruongViewModel
                 {
                     Id = p.id,
                     MSSV = p.MSSV,
@@ -147,7 +144,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             }).ToList();
 
 
-            return View("~/Areas/SinhVien/Views/TrangChu/PhieuDangKy.cshtml", result);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/PhieuDangKy.cshtml", result);
         }
 
         [HttpGet]
@@ -165,7 +162,6 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                         where tk.username == username
                         select sv.MSSV).FirstOrDefault();
 
-       
             DateTime? thoiGianMacDinh = null;
 
             if (dot.NgayLaoDong.HasValue && !string.IsNullOrWhiteSpace(dot.ThoiGian))
@@ -208,7 +204,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 thoiGianMacDinh = dot.NgayLaoDong.Value.Date.Add(new TimeSpan(7, 0, 0));
             }
 
-            var model = new PhieuDangKyViewModel
+            var model = new PhieuDangKyLopTruongViewModel
             {
                 MSSV = mssv,
                 DotId = dot.ID,
@@ -224,12 +220,13 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 ThoiGian = thoiGianMacDinh
             };
 
-            return View("~/Areas/SinhVien/Views/TrangChu/CreatePhieuDangKy.cshtml", model);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/CreatePhieuDangKy.cshtml", model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatePhieuDangKy(PhieuDangKyViewModel model)
+        public ActionResult CreatePhieuDangKy(PhieuDangKyLopTruongViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -246,57 +243,239 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 {
                     id = newId,
                     MSSV = model.MSSV,
+                    DotId = model.DotId, // ✅ BỔ SUNG DÒNG NÀY
                     LaoDongTheoLop = laoDongLop,
                     LaoDongCaNhan = laoDongCaNhan,
                     ThoiGian = model.ThoiGian,
-                    DotId = model.DotId
                 };
 
                 _contextdb.PhieuDangKies.Add(entity);
                 _contextdb.SaveChanges();
-                return RedirectToAction("Index", "TrangChu", new { area = "SinhVien" });
+                return RedirectToAction("Index", "TrangChuLopTruong", new { area = "LopTruong" });
             }
 
-            return View("~/Areas/SinhVien/Views/TrangChu/CreatePhieuDangKy.cshtml", model);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/CreatePhieuDangKy.cshtml", model);
         }
 
-
+        
         [HttpGet]
-        public ActionResult EditPhieuDangKy(int id)
+        public ActionResult CreatePhieuDangKyTheoLop(int dotId)
         {
-            var entity = _contextdb.PhieuDangKies.Find(id);
-            if (entity == null) return HttpNotFound();
+            string username = User.Identity.Name;
 
-            var model = new PhieuDangKyViewModel
+            // Lấy MSSV từ tài khoản
+            var mssv = (from tk in _contextdb.TaiKhoans
+                        join sv in _contextdb.SinhViens on tk.taikhoan_id equals sv.taikhoan
+                        where tk.username == username
+                        select sv.MSSV).FirstOrDefault();
+
+            // Lấy lớp của lớp trưởng
+            var lopId = _contextdb.SinhViens.Where(sv => sv.MSSV == mssv).Select(sv => sv.lop_id).FirstOrDefault();
+
+            // Lấy danh sách sinh viên trong lớp
+            var sinhViens = _contextdb.SinhViens
+                .Where(sv => sv.lop_id == lopId)
+                .Select(sv => new SinhVienItem
+                {
+                    MSSV = sv.MSSV,
+                    HoTen = sv.hoten,
+                    DuocChon = true // mặc định tích chọn
+                }).ToList();
+
+            // 🟢 Tính thời gian mặc định dựa trên dotId
+            var dot = _contextdb.TaoDotNgayLaoDongs.FirstOrDefault(d => d.ID == dotId);
+            DateTime? thoiGianMacDinh = null;
+
+            if (dot != null && dot.NgayLaoDong.HasValue && !string.IsNullOrWhiteSpace(dot.ThoiGian))
             {
-                Id = entity.id,
-                MSSV = entity.MSSV,
-                LaoDongCaNhan = entity.LaoDongCaNhan,
-                LaoDongTheoLop = entity.LaoDongTheoLop,
-                ThoiGian = entity.ThoiGian
+                string gioRaw = dot.ThoiGian.Trim();
+                TimeSpan gioBatDau;
+
+                var matchKhoangGio = Regex.Match(gioRaw, @"^(\d{1,2})(h|h\d{1,2})?");
+                if (matchKhoangGio.Success)
+                {
+                    string gioPhut = matchKhoangGio.Value.Replace("h", ":");
+
+                    if (Regex.IsMatch(gioPhut, @"^\d{1,2}$"))
+                        gioPhut += ":00";
+                    else if (Regex.IsMatch(gioPhut, @"^\d{1,2}:$"))
+                        gioPhut += "00";
+
+                    if (TimeSpan.TryParse(gioPhut, out gioBatDau))
+                    {
+                        thoiGianMacDinh = dot.NgayLaoDong.Value.Date.Add(gioBatDau);
+                    }
+                    else
+                    {
+                        thoiGianMacDinh = dot.NgayLaoDong.Value.Date.Add(new TimeSpan(7, 0, 0));
+                    }
+                }
+                else
+                {
+                    thoiGianMacDinh = dot.NgayLaoDong.Value.Date.Add(new TimeSpan(7, 0, 0));
+                }
+            }
+            else if (dot?.NgayLaoDong != null)
+            {
+                thoiGianMacDinh = dot.NgayLaoDong.Value.Date.Add(new TimeSpan(7, 0, 0));
+            }
+            else
+            {
+                // fallback nếu không có dot
+                thoiGianMacDinh = DateTime.Now;
+            }
+
+            var viewModel = new PhieuDangKyTheoLopViewModel
+            {
+                DotId = dotId,
+                ThoiGian = thoiGianMacDinh,
+                LaoDongTheoLop = true,
+                SinhViensTrongLop = sinhViens
             };
-            return View("~/Areas/SinhVien/Views/TrangChu/EditPhieuDangKy.cshtml", model);
+
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/CreatePhieuDangKyTheoLop.cshtml", viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPhieuDangKy(PhieuDangKyViewModel model)
+        public ActionResult CreatePhieuDangKyTheoLop(PhieuDangKyTheoLopViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var entity = _contextdb.PhieuDangKies.Find(model.Id);
-                if (entity == null) return HttpNotFound();
+                var sinhVienChon = model.SinhViensTrongLop.Where(sv => sv.DuocChon).ToList();
 
-                string loaiLaoDong = Request.Form["LoaiLaoDong"];
-                entity.MSSV = model.MSSV;
-                entity.LaoDongTheoLop = (loaiLaoDong == "Lop");
-                entity.LaoDongCaNhan = (loaiLaoDong == "CaNhan");
-                entity.ThoiGian = model.ThoiGian;
+                int maxId = _contextdb.PhieuDangKies.Any() ? _contextdb.PhieuDangKies.Max(p => p.id) + 1 : 1;
+
+                foreach (var sv in sinhVienChon)
+                {
+                    var phieu = new PhieuDangKy
+                    {
+                        id = maxId++,
+                        MSSV = sv.MSSV,
+                        DotId = model.DotId,
+                        LaoDongTheoLop = true,
+                        LaoDongCaNhan = false,
+                        ThoiGian = model.ThoiGian
+                    };
+
+                    _contextdb.PhieuDangKies.Add(phieu);
+                }
 
                 _contextdb.SaveChanges();
-                return RedirectToAction("Index", "TrangChu", new { area = "SinhVien" });
+                return RedirectToAction("PhieuDangKy", "TrangChuLopTruong");
             }
-            return View("~/Areas/SinhVien/Views/TrangChu/EditPhieuDangKy.cshtml", model);
+
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/CreatePhieuDangKyTheoLop.cshtml", model);
+        }
+     
+        //thứ 6
+        [HttpGet]
+        public ActionResult EditPhieuDangKy(int id)
+        {
+            var phieu = _contextdb.PhieuDangKies.Find(id);
+            if (phieu == null) return HttpNotFound();
+
+            var dot = _contextdb.TaoDotNgayLaoDongs.FirstOrDefault(d => d.ID == phieu.DotId);
+            var lopId = _contextdb.SinhViens.Where(sv => sv.MSSV == phieu.MSSV).Select(sv => sv.lop_id).FirstOrDefault();
+
+            var sinhViens = _contextdb.SinhViens
+                .Where(sv => sv.lop_id == lopId)
+                .Select(sv => new SinhVienItem
+                {
+                    MSSV = sv.MSSV,
+                    HoTen = sv.hoten,
+                    DuocChon = _contextdb.PhieuDangKies.Any(p => p.DotId == phieu.DotId && p.MSSV == sv.MSSV && p.LaoDongTheoLop == true)
+                }).ToList();
+
+            var viewModel = new EditPhieuDangKyFullViewModel
+            {
+                ThongTinPhieu = new PhieuDangKyLopTruongViewModel
+                {
+                    Id = phieu.id,
+                    DotId = (int)phieu.DotId,
+                    ThoiGian = phieu.ThoiGian,
+                    DotLaoDong = dot?.DotLaoDong,
+                    NgayLaoDong = dot?.NgayLaoDong,
+                    KhuVuc = dot?.KhuVuc,
+                    Buoi = dot?.Buoi,
+                    MoTa = dot?.MoTa,
+                    GiaTri = dot?.GiaTri
+                },
+                ChinhSuaSinhVien = new PhieuDangKyTheoLopViewModel
+                {
+                    Id = phieu.id,
+                    DotId = (int)phieu.DotId,
+                    ThoiGian = phieu.ThoiGian,
+                    SinhViensTrongLop = sinhViens
+                }
+            };
+
+            return View("EditPhieuDangKy", viewModel);
+        }
+        //thứ 6
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPhieuDangKy(EditPhieuDangKyFullViewModel model)
+        {
+            var dotId = model.ChinhSuaSinhVien.DotId;
+            var sinhVienChon = model.ChinhSuaSinhVien.SinhViensTrongLop
+                                .Where(sv => sv.DuocChon)
+                                .Select(sv => sv.MSSV)
+                                .ToList();
+
+            var phieuHienTai = _contextdb.PhieuDangKies
+                .Where(p => p.DotId == dotId)
+                .ToList();
+
+            var mssvHienTai = phieuHienTai
+                .Where(p => p.LaoDongTheoLop == true)
+                .Select(p => p.MSSV.Value)
+                .ToList();
+
+            var sinhVienThem = sinhVienChon.Except(mssvHienTai).ToList();
+            var sinhVienXoa = mssvHienTai.Except(sinhVienChon).ToList();
+
+            // ✅ Cập nhật những MSSV mới được chọn
+            foreach (var mssv in sinhVienThem)
+            {
+                var phieu = phieuHienTai.FirstOrDefault(p => p.MSSV == mssv && p.DotId == dotId);
+                if (phieu != null)
+                {
+                    phieu.LaoDongTheoLop = true;
+                }
+                else
+                {
+                    // Nếu chưa có → tạo mới với id tự tăng
+                    int nextId = _contextdb.PhieuDangKies.Any()
+                        ? _contextdb.PhieuDangKies.Max(p => p.id) + 1
+                        : 1;
+
+                    _contextdb.PhieuDangKies.Add(new PhieuDangKy
+                    {
+                        id = nextId,
+                        MSSV = mssv,
+                        DotId = dotId,
+                        LaoDongTheoLop = true,
+                        LaoDongCaNhan = false,
+                        ThoiGian = model.ChinhSuaSinhVien.ThoiGian
+                    });
+                }
+            }
+
+            // ✅ Xóa tick (bỏ chọn) → cập nhật LaoDongTheoLop = false
+            foreach (var mssv in sinhVienXoa)
+            {
+                var phieu = phieuHienTai
+                    .FirstOrDefault(p => p.DotId == dotId && p.MSSV == mssv && p.LaoDongTheoLop == true);
+
+                if (phieu != null)
+                {
+                    phieu.LaoDongTheoLop = false;
+                }
+            }
+
+            _contextdb.SaveChanges();
+            return RedirectToAction("PhieuDangKy", "TrangChuLopTruong");
         }
 
         [HttpGet]
@@ -307,9 +486,9 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
 
             _contextdb.PhieuDangKies.Remove(entity);
             _contextdb.SaveChanges();
-            return RedirectToAction("PhieuDangKy", "TrangChu", new { area = "SinhVien" });
+            //return RedirectToAction("PhieuDangKy", "TrangChuLopTruong", new { area = "LopTruong" });
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/PhieuDangKy.cshtml");
         }
-     
         [HttpGet]
         public ActionResult LichLaoDong(DateTime? selectedDate)
         {
@@ -336,7 +515,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 .Where(p => p.MSSV == mssv &&
                             DbFunctions.TruncateTime(p.ThoiGian) >= startOfWeek.Date &&
                             DbFunctions.TruncateTime(p.ThoiGian) <= endOfWeek.Date)
-                .Select(p => new PhieuDangKyViewModel
+                .Select(p => new PhieuDangKyLopTruongViewModel
                 {
                     Id = p.id,
                     MSSV = p.MSSV,
@@ -349,14 +528,9 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             ViewBag.StartOfWeek = startOfWeek;
             ViewBag.EndOfWeek = endOfWeek;
 
-            return View("~/Areas/SinhVien/Views/TrangChu/LichLaoDong.cshtml", lichDangKy);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/LichLaoDong.cshtml", lichDangKy);
         }
-
-        public ActionResult DoiMatKhau()
-        {
-            return View();
-        }
-      
+     
         [HttpGet]
         public ActionResult DiemDanh()
         {
@@ -376,7 +550,7 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             var viewModel = danhSachPhieu.Select(p =>
             {
                 var dot = danhSachDot.FirstOrDefault(d => d.ID == p.DotId);
-                return new PhieuDangKyViewModel
+                return new PhieuDangKyLopTruongViewModel
                 {
                     Id = p.id,
                     MSSV = p.MSSV,
@@ -387,9 +561,8 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 };
             }).ToList();
 
-            return View("~/Areas/SinhVien/Views/TrangChu/DiemDanh.cshtml", viewModel);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/DiemDanh.cshtml", viewModel);
         }
-
         [HttpPost]
         public ActionResult NhapMa(string maDiemDanh, int? id) // Cho phép id null
         {
@@ -419,15 +592,13 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
             TempData["DiemDanhId"] = id;
             return RedirectToAction("DiemDanh");
         }
-
-
         public ActionResult ThongBao()
         {
             var dsDotLaoDong = _contextdb.TaoDotNgayLaoDongs
-                .Select(d => new DotLaoDongViewModel
+                .Select(d => new DotLaoDongLopTruongViewModel
                 {
                     ID = d.ID,
-                    DotLaoDong = d.DotLaoDong,
+                    TenDotLaoDong = d.TenDotLaoDong,
                     KhuVuc = d.KhuVuc,
                     LoaiLaoDong = d.LoaiLaoDong,
                     NgayLaoDong = d.NgayLaoDong ?? DateTime.MinValue,
@@ -438,26 +609,18 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 })
                 .ToList();
 
-            return View("~/Areas/SinhVien/Views/TrangChu/ThongBao.cshtml", dsDotLaoDong);
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/ThongBao.cshtml", dsDotLaoDong);
         }
         public ActionResult DangKyTheoThongBao()
         {
-            var userRole = (string)Session["Role"]; // hoặc dùng User.IsInRole nếu có sẵn
-
-            var query = _contextdb.TaoDotNgayLaoDongs.AsQueryable();
-
-            if (userRole == "SinhVien")
-            {
-                query = query.Where(d => d.LoaiLaoDong == "Cá nhân");
-            }
-            var dsDotLaoDong = _contextdb.TaoDotNgayLaoDongs
-                .Where(d => d.LoaiLaoDong == "Cá nhân") // chỉ lấy đợt lao động cá nhân
-                .Select(d => new DotLaoDongViewModel
+       
+                var dsDotLaoDong = _contextdb.TaoDotNgayLaoDongs
+                .Select(d => new DotLaoDongLopTruongViewModel
                 {
                     ID = d.ID,
                     DotLaoDong = d.DotLaoDong,
                     KhuVuc = d.KhuVuc,
-                    LoaiLaoDong = d.LoaiLaoDong,
+                    LoaiLaoDong = d.LoaiLaoDong, // ✅ Đảm bảo có trường này, ví dụ: "Lop" hoặc "CaNhan"
                     NgayLaoDong = d.NgayLaoDong ?? DateTime.MinValue,
                     Buoi = d.Buoi,
                     GiaTri = d.GiaTri ?? 0,
@@ -466,7 +629,8 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                 })
                 .ToList();
 
-            return View("~/Areas/SinhVien/Views/TrangChu/DangKyTheoThongBao.cshtml", dsDotLaoDong);
+
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/DangKyTheoThongBao.cshtml", dsDotLaoDong);
         }
         public ActionResult ThongKe()
         {
@@ -481,19 +645,15 @@ namespace QuanLyNgayLaoDong.Areas.SinhVien.Controllers
                           where sv.MSSV == mssv
                           join songay in _contextdb.SoNgayLaoDongs on sv.MSSV equals songay.MSSV into soNgayJoin
                           from soNgay in soNgayJoin.DefaultIfEmpty()
-                          select new ThongKeLaoDongViewModel
+                          select new ThongKeLaoDongLopTruongViewModel
                           {
                               MSSV = sv.MSSV,
                               HoTen = sv.hoten,
                               TongSoNgay = soNgay != null ? soNgay.TongSoNgay : 0
                           }).FirstOrDefault();
 
-            return View("~/Areas/SinhVien/Views/TrangChu/ThongKe.cshtml", svInfo); // không cần List<>
+            return View("~/Areas/LopTruong/Views/TrangChuLopTruong/ThongKe.cshtml", svInfo); // không cần List<>
 
-        }
-        public ActionResult PhieuXacNhanHoanThanh()
-        {
-            return View();
         }
     }
 }

@@ -1,0 +1,8 @@
+﻿@model QuanLyNgayLaoDong.Areas.SinhVien.Modelview.TaiKhoanViewModel
+
+@if (Model != null)
+{
+    <img src="@Url.Content(Model.AnhDaiDien)" alt="User Avatar" class="user-avatar" />
+    <label class="user-name">@Model.HoTen</label>
+}
+

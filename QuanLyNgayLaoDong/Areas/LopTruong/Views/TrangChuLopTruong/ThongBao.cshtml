@@ -1,0 +1,42 @@
+﻿@model List<QuanLyNgayLaoDong.Areas.LopTruong.ViewModel.DotLaoDongLopTruongViewModel>
+
+@{
+    ViewBag.Title = "Thông Báo Đợt Lao Động";
+    Layout = "~/Areas/LopTruong/Views/Shared/_LayoutLopTruong.cshtml";
+}
+
+<h3 class="mb-4">Danh sách đợt lao động</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên đợt lao động</th>
+            <th>Khu vực</th>
+            <th>Loại lao động</th>
+            <th>Ngày lao động</th>
+            <th>Buổi</th>
+            <th>Ngày được cộng</th>
+            <th>Thời gian</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dot in Model)
+        {
+            <tr>
+                <td>@dot.DotLaoDong</td>
+                <td>@dot.KhuVuc</td>
+                <td>@dot.LoaiLaoDong</td>
+                <td>@dot.NgayLaoDong.ToString("dd/MM/yyyy")</td>
+                <td>@dot.Buoi</td>
+                <td>@dot.GiaTri ngày</td>
+                <td>@dot.ThoiGian</td>
+                <td>@dot.MoTa</td>
+                <td>
+                    @Html.ActionLink("Đăng ký", "CreatePhieuDangKy", new { id = dot.ID }, new { @class = "btn btn-primary btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

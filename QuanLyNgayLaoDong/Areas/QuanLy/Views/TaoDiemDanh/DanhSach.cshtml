@@ -1,0 +1,26 @@
+﻿@model List<QuanLyNgayLaoDong.Models.SinhVien>
+
+@{
+    ViewBag.Title = "DanhSach";
+    Layout = "~/Areas/QuanLy/Views/Shared/_LayoutQuanLyTaoDiemDanh.cshtml";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>MSSV</th>
+            <th>Họ tên</th>
+            <th>Lớp</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sv in Model)
+        {
+            <tr>
+                <td>@sv.MSSV</td>
+                <td>@sv.hoten</td>
+                <td>@sv.lop_id</td>
+            </tr>
+        }
+    </tbody>
+</table>

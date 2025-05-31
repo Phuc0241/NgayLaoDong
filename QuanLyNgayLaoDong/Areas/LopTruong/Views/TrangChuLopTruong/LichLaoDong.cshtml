@@ -1,0 +1,89 @@
+﻿@model List<QuanLyNgayLaoDong.Areas.LopTruong.ViewModel.PhieuDangKyLopTruongViewModel>
+
+@{
+    ViewBag.Title = "Lịch Lao Động";
+    Layout = "~/Areas/LopTruong/Views/Shared/_LayoutLopTruong.cshtml";
+    var startOfWeek = (DateTime)ViewBag.StartOfWeek;
+    // Khung giờ lao động cố định để hiển thị cột
+    var timeSlots = new[] { "07:00", "09:00", "13:00", "15:00" };
+}
+
+@functions {
+    // Kiểm tra thời gian thực tế có nằm trong khoảng khung giờ
+    bool IsInTimeRange(DateTime? actualTime, string slot)
+    {
+        if (actualTime == null) return false;
+        var time = actualTime.Value.TimeOfDay;
+
+        switch (slot)
+        {
+            case "07:00":
+                return time >= TimeSpan.FromHours(6.5) && time < TimeSpan.FromHours(8.5);   // 06:30 - 08:29
+            case "09:00":
+                return time >= TimeSpan.FromHours(8.5) && time < TimeSpan.FromHours(10.5);  // 08:30 - 10:29
+            case "13:00":
+                return time >= TimeSpan.FromHours(12.5) && time < TimeSpan.FromHours(14.5); // 12:30 - 14:29
+            case "15:00":
+                return time >= TimeSpan.FromHours(14.5) && time < TimeSpan.FromHours(16.5); // 14:30 - 16:29
+            default:
+                return false;
+        }
+    }
+}
+
+<h2 class="text-center mb-4">Lịch Lao Động Tuần @startOfWeek.ToString("dd/MM/yyyy") - @startOfWeek.AddDays(6).ToString("dd/MM/yyyy")</h2>
+
+<div class="text-right mb-3">
+    @using (Html.BeginForm("LichLaoDong", "TrangChu", new { area = "SinhVien" }, FormMethod.Get))
+    {
+        <label for="selectedDate">Chọn tuần:</label>
+        <input type="date" id="selectedDate" name="selectedDate" value="@startOfWeek.ToString("yyyy-MM-dd")" />
+        <button type="submit" class="btn btn-primary ml-2">Xem</button>
+    }
+</div>
+
+<table class="table table-bordered text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Giờ / Thứ</th>
+            @for (int i = 0; i < 7; i++)
+            {
+                var day = startOfWeek.AddDays(i);
+                <th>
+                    @day.ToString("dddd")<br />
+                    @day.ToString("dd/MM")
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var slot in timeSlots)
+        {
+            <tr>
+                <td><strong>@slot</strong></td>
+                @for (int i = 0; i < 7; i++)
+                {
+                    var day = startOfWeek.AddDays(i);
+
+                    var buoi = Model.FirstOrDefault(x =>
+                        x.ThoiGian?.Date == day.Date &&
+                        IsInTimeRange(x.ThoiGian, slot));
+
+                    if (buoi != null)
+                    {
+                        <td class="text-white" style="background-color:@(buoi.LaoDongTheoLop == true ? "#28a745" : "#17a2b8")">
+                            @*@buoi.ThoiGian?.ToString("HH:mm") <br />*@
+                            @buoi.ThoiGian<br />
+                            Phiếu @buoi.Id <br />
+                            @(buoi.LaoDongTheoLop == true ? "Lớp" : "Cá nhân")
+                        </td>
+                    }
+                    else
+                    {
+                        <td>-</td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

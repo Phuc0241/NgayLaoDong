@@ -1,0 +1,47 @@
+﻿@model QuanLyNgayLaoDong.Areas.LopTruong.ViewModel.PhieuDangKyTheoLopViewModel
+
+@{
+    ViewBag.Title = "Tạo Phiếu Đăng Ký Lao Động Theo Lớp";
+    Layout = "~/Areas/LopTruong/Views/Shared/_LayoutLopTruong.cshtml";
+}
+
+@using (Html.BeginForm("CreatePhieuDangKyTheoLop", "TrangChuLopTruong", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.DotId)
+
+    <h4>Chọn sinh viên muốn đăng ký lao động:</h4>
+    <table class="table">
+        <tr>
+            <th>Chọn</th>
+            <th>MSSV</th>
+            <th>Họ tên</th>
+        </tr>
+        @for (int i = 0; i < Model.SinhViensTrongLop.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.SinhViensTrongLop[i].DuocChon)
+                    @Html.HiddenFor(m => m.SinhViensTrongLop[i].MSSV)
+                    @Html.HiddenFor(m => m.SinhViensTrongLop[i].HoTen)
+                </td>
+                <td>@Model.SinhViensTrongLop[i].MSSV</td>
+                <td>@Model.SinhViensTrongLop[i].HoTen</td>
+            </tr>
+        }
+    </table>
+
+    @*<div class="form-group">
+            @Html.LabelFor(m => m.ThoiGian, "Thời gian lao động")
+            @Html.TextBoxFor(m => m.ThoiGian, new { @class = "form-control", type = "datetime-local" })
+        </div>*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.ThoiGian)
+        <input type="datetime-local" name="ThoiGian" class="form-control"
+               value="@(Model.ThoiGian.HasValue ? Model.ThoiGian.Value.ToString("yyyy-MM-ddTHH:mm") : "")" />
+        @Html.ValidationMessageFor(model => model.ThoiGian, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-success">Đăng ký lao động lớp</button>
+    <a href="@Url.Action("DangKyTheoThongBao", "TrangChuLopTruong", new { area = "LopTruong" })" class="btn btn-secondary ml-2">Quay lại</a>
+}

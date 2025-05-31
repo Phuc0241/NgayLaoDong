@@ -21,13 +21,13 @@
             <a href="TrangChu">
                 <img src="~/Content/trangchu/images/imageLayout/LogoTruong.png" alt="Logo" class="logo">
             </a>
-            <div class="nav-content-text">Sinh Viên</div>
+            <div class="nav-content-text">Lớp Trưởng</div>
             <div class="user-menu" id="userMenu">
                 <img src="@Url.Content(Model.AnhDaiDien)" alt="User Avatar" class="user-avatar" />
                 <label class="user-name">@Model.HoTen</label>
                 <i class="fa fa-caret-down"></i>
                 <ul class="dropdown-menu" id="dropdownMenu">
-                    <li><a class="a-color" href="@Url.Action("TrangThongTinSinhVien", "TrangChu")">Thông tin cá nhân</a></li>
+                    <li><a class="a-color" href="@Url.Action("TrangThongTinLopTruong", "TrangChuLopTruong")">Thông tin cá nhân</a></li>
                     <li><a class="a-color" href="#">Đổi mật khẩu</a></li>
                     <li><a class="a-color" href="javascript:void(0);" onclick="openModal()">Đăng xuất</a></li>
                 </ul>
@@ -42,7 +42,7 @@
                     <div class="text-center">
                         <img src="@Url.Content(Model.AnhDaiDien)" class="img-fluid rounded-circle" width="120" alt="Avatar" />
                         <div class="mt-2">
-                            <a href="@Url.Action("TrangThongTinSinhVien", "TrangChu")" class="text-primary">Xem chi tiết</a>
+                            <a href="@Url.Action("TrangThongTinLopTruong", "TrangChuLopTruong")" class="text-primary">Xem chi tiết</a>
                         </div>
                     </div>
                     <ul class="list-group list-group-flush mt-3">
@@ -58,7 +58,7 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-4">
-                        <a href="/TrangChu/PhieuDangKy" class="text-decoration-none">
+                        <a href="/TrangChuLopTruong/PhieuDangKy" class="text-decoration-none">
                             <div class="card shadow-sm text-center p-3 text-white mb-4">
                                 <h6 class="Text-h6">Đăng Ký Lao Động</h6>
                                 <img src="~/Content/trangchu/images/imageLayout/Create.png" class="img-Laodong" width="120">
@@ -66,7 +66,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="/TrangChu/ThongKe" class="text-decoration-none">
+                        <a href="/TrangChuLopTruong/ThongKe" class="text-decoration-none">
                             <div class="card shadow-sm text-center p-3 text-white mb-4">
                                 <h6 class="Text-h6">Thống Kê</h6>
                                 <img src="~/Content/trangchu/images/imageLayout/Thongke.png" class="img-Laodong" width="120">
@@ -74,7 +74,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="/TrangChu/LichLaoDong" class="text-decoration-none">
+                        <a href="/TrangChuLopTruong/LichLaoDong" class="text-decoration-none">
                             <div class="card shadow-sm text-center p-3 text-white mb-4">
                                 <h6 class="Text-h6">Lịch Lao Động</h6>
                                 <img src="~/Content/trangchu/images/imageLayout/icons8-calendar.gif" class="img-Laodong" width="120">
@@ -84,7 +84,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <a href="/TrangChu/DiemDanh" class="text-decoration-none">
+                        <a href="/TrangChuLopTruong/DiemDanh" class="text-decoration-none">
                             <div class="card shadow-sm text-center p-3 mb-4">
                                 <h6>Điểm Danh Lao Động </h6>
                                 <img src="~/Content/trangchu/images/imageLayout/Duyet1.png" class="img-Laodong" width="120">
@@ -92,7 +92,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="/TrangChu/ThongBao" class="text-decoration-none">
+                        <a href="/TrangChuLopTruong/ThongBao" class="text-decoration-none">
                             <div class="card shadow-sm text-center p-3 mb-4">
                                 <h6>Thông Báo</h6>
                                 <img src="~/Content/trangchu/images/imageLayout/icons8-bell.gif" class="img-Laodong" width="120">

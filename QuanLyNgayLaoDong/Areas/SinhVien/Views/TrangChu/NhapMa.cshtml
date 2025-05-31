@@ -1,0 +1,23 @@
+﻿
+    @{
+        ViewBag.Title = "Điểm danh lao động";
+        Layout = "~/Areas/SinhVien/Views/Shared/_LayoutSinhVien.cshtml";
+    }
+
+    <h2>Điểm danh</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @using (Html.BeginForm("NhapMa", "TrangChu", FormMethod.Post))
+    {
+        <label>Nhập mã điểm danh:</label>
+        <input type="text" name="maDiemDanh" class="form-control" placeholder="VD: 123456" />
+        <button type="submit" class="btn btn-primary mt-2">Xác nhận</button>
+    }
